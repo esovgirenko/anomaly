@@ -1,6 +1,7 @@
-# Rule-based detection rules
+# Rule-based detection rules for LLM Agents
 
 rules:
+  # LLM-specific rules
   # High CPU usage
   - name: high_cpu_usage
     description: CPU usage exceeds 90%
@@ -88,4 +89,78 @@ rules:
         operator: "<"
         value: 10.0
         description: Less than 10 requests per second
+
+  # LLM-specific rules
+  
+  # High token usage
+  - name: high_token_usage
+    description: Token usage exceeds threshold
+    anomaly_type: token_usage
+    severity: 0.8
+    logic: AND
+    conditions:
+      - metric: total_tokens
+        operator: ">"
+        value: 50000
+        description: More than 50,000 tokens per request
+  
+  # Very high latency
+  - name: very_high_latency
+    description: Response latency too high
+    anomaly_type: latency
+    severity: 0.9
+    logic: AND
+    conditions:
+      - metric: latency_ms
+        operator: ">"
+        value: 60000
+        description: More than 60 seconds latency
+  
+  # High cost per request
+  - name: high_cost_per_request
+    description: Cost per request exceeds threshold
+    anomaly_type: cost
+    severity: 0.8
+    logic: AND
+    conditions:
+      - metric: cost_usd
+        operator: ">"
+        value: 0.50
+        description: More than $0.50 per request
+  
+  # Quality degradation
+  - name: quality_degradation
+    description: Quality score dropped significantly
+    anomaly_type: quality
+    severity: 0.7
+    logic: AND
+    conditions:
+      - metric: quality_score
+        operator: "<"
+        value: 0.6
+        description: Quality score below 0.6
+  
+  # Hallucination detected
+  - name: hallucination_detected
+    description: Hallucination detected in response
+    anomaly_type: quality
+    severity: 0.9
+    logic: AND
+    conditions:
+      - metric: hallucination_detected
+        operator: "=="
+        value: true
+        description: Hallucination flag is true
+  
+  # Context window almost full
+  - name: context_window_high
+    description: Context window usage is very high
+    anomaly_type: context_overflow
+    severity: 0.8
+    logic: AND
+    conditions:
+      - metric: context_window_usage
+        operator: ">"
+        value: 0.90
+        description: Context window usage above 90%
 

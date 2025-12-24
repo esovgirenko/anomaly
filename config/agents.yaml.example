@@ -1,25 +1,52 @@
-# Example agent configurations
-# Copy this file to agents.yaml and customize for your agents
+# Example LLM agent configurations
+# Copy this file to agents.yaml and customize for your LLM agents
 
 agents:
-  - agent_id: agent_1
-    metrics_endpoint: http://agent1:9090/metrics
+  # LLM Agent на базе GPT-4
+  - agent_id: gpt4_chatbot
+    metrics_endpoint: http://localhost:9090/metrics/gpt4_chatbot
     metadata:
-      name: "Processing Agent 1"
+      name: "GPT-4 Chatbot"
+      model: "gpt-4"
+      provider: "openai"
       environment: "production"
-      region: "us-east-1"
+      context_window_size: 8192
+      rate_limit: 500  # requests per minute
+      description: "Основной чат-бот на базе GPT-4"
   
-  - agent_id: agent_2
-    metrics_endpoint: http://agent2:9090/metrics
+  # LLM Agent на базе Claude
+  - agent_id: claude_assistant
+    metrics_endpoint: http://localhost:9090/metrics/claude_assistant
     metadata:
-      name: "Processing Agent 2"
+      name: "Claude Assistant"
+      model: "claude-3-opus"
+      provider: "anthropic"
       environment: "production"
-      region: "us-west-2"
+      context_window_size: 200000
+      rate_limit: 50
+      description: "Ассистент на базе Claude 3 Opus"
   
-  - agent_id: agent_3
-    metrics_endpoint: http://agent3:9090/metrics
+  # LLM Agent для обработки документов
+  - agent_id: document_processor
+    metrics_endpoint: http://localhost:9090/metrics/document_processor
     metadata:
-      name: "API Agent"
+      name: "Document Processor"
+      model: "gpt-4-turbo"
+      provider: "openai"
+      environment: "production"
+      context_window_size: 128000
+      rate_limit: 100
+      description: "Обработка и анализ документов"
+  
+  # Тестовый LLM Agent
+  - agent_id: test_llm_agent
+    metrics_endpoint: null
+    metadata:
+      name: "Test LLM Agent"
+      model: "gpt-3.5-turbo"
+      provider: "openai"
       environment: "staging"
-      region: "eu-west-1"
+      context_window_size: 4096
+      rate_limit: 3000
+      description: "Тестовый агент для разработки"
 

@@ -16,6 +16,14 @@ from anomaly_detection.detectors.statistical import StatisticalDetector
 from anomaly_detection.detectors.ml import MLDetector
 from anomaly_detection.detectors.rule_based import RuleBasedDetector, Rule
 from anomaly_detection.detectors.timeseries import TimeSeriesDetector
+from anomaly_detection.detectors.llm_detector import (
+    TokenUsageDetector,
+    LatencyDetector,
+    CostDetector,
+    QualityDetector,
+    RateLimitDetector,
+    ContextOverflowDetector,
+)
 
 
 class AnomalyDetectionSystem:
@@ -123,6 +131,59 @@ class AnomalyDetectionSystem:
             self._detectors.append(TimeSeriesDetector(
                 window_size=ts_config.get("window_size", 100),
                 use_prophet=ts_config.get("use_prophet", False),
+            ))
+        
+        # LLM-specific detectors
+        llm_detectors_config = detectors_config.get("llm", {})
+        
+        # Token usage detector
+        if llm_detectors_config.get("token_usage", {}).get("enabled", True):
+            token_config = llm_detectors_config.get("token_usage", {})
+            self._detectors.append(TokenUsageDetector(
+                token_spike_threshold=token_config.get("token_spike_threshold", 3.0),
+                max_tokens_threshold=token_config.get("max_tokens_threshold"),
+                inefficient_ratio_threshold=token_config.get("inefficient_ratio_threshold", 10.0),
+            ))
+        
+        # Latency detector
+        if llm_detectors_config.get("latency", {}).get("enabled", True):
+            latency_config = llm_detectors_config.get("latency", {})
+            self._detectors.append(LatencyDetector(
+                latency_threshold_ms=latency_config.get("latency_threshold_ms"),
+                spike_threshold=latency_config.get("spike_threshold", 3.0),
+            ))
+        
+        # Cost detector
+        if llm_detectors_config.get("cost", {}).get("enabled", True):
+            cost_config = llm_detectors_config.get("cost", {})
+            self._detectors.append(CostDetector(
+                cost_threshold_usd=cost_config.get("cost_threshold_usd"),
+                spike_threshold=cost_config.get("spike_threshold", 3.0),
+                daily_budget_usd=cost_config.get("daily_budget_usd"),
+            ))
+        
+        # Quality detector
+        if llm_detectors_config.get("quality", {}).get("enabled", True):
+            quality_config = llm_detectors_config.get("quality", {})
+            self._detectors.append(QualityDetector(
+                quality_threshold=quality_config.get("quality_threshold", 0.7),
+                coherence_threshold=quality_config.get("coherence_threshold", 0.7),
+                relevance_threshold=quality_config.get("relevance_threshold", 0.7),
+            ))
+        
+        # Rate limit detector
+        if llm_detectors_config.get("rate_limit", {}).get("enabled", True):
+            rate_limit_config = llm_detectors_config.get("rate_limit", {})
+            self._detectors.append(RateLimitDetector(
+                warning_threshold=rate_limit_config.get("warning_threshold", 0.8),
+            ))
+        
+        # Context overflow detector
+        if llm_detectors_config.get("context_overflow", {}).get("enabled", True):
+            context_config = llm_detectors_config.get("context_overflow", {})
+            self._detectors.append(ContextOverflowDetector(
+                warning_threshold=context_config.get("warning_threshold", 0.85),
+                critical_threshold=context_config.get("critical_threshold", 0.95),
             ))
     
     def register_agent(

@@ -7,12 +7,19 @@ from typing import Any, Dict, Optional
 
 
 class AnomalyType(Enum):
-    """Types of anomalies that can be detected"""
-    BEHAVIORAL = "behavioral"
-    PERFORMANCE = "performance"
-    COMMUNICATION = "communication"
-    TEMPORAL = "temporal"
-    SEMANTIC = "semantic"
+    """Types of anomalies that can be detected for LLM agents"""
+    BEHAVIORAL = "behavioral"  # Отклонения в поведении агента
+    PERFORMANCE = "performance"  # Проблемы производительности
+    COMMUNICATION = "communication"  # Проблемы коммуникации
+    TEMPORAL = "temporal"  # Временные аномалии
+    SEMANTIC = "semantic"  # Семантические ошибки
+    # LLM-specific types
+    TOKEN_USAGE = "token_usage"  # Аномальное использование токенов
+    LATENCY = "latency"  # Аномальная задержка ответа
+    COST = "cost"  # Аномальные расходы на API
+    QUALITY = "quality"  # Падение качества ответов (галлюцинации, ошибки)
+    RATE_LIMIT = "rate_limit"  # Превышение лимитов API
+    CONTEXT_OVERFLOW = "context_overflow"  # Переполнение контекста
 
 
 class Severity(Enum):

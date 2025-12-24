@@ -1,4 +1,5 @@
-# Configuration for Anomaly Detection System
+# Configuration for Anomaly Detection System for LLM Agents
+# Система обнаружения аномалий для LLM-агентов
 
 # Collection interval (seconds)
 collection_interval_seconds: 10
@@ -33,6 +34,40 @@ detectors:
     use_prophet: false
     trend_threshold: 2.0
     seasonal_periods: [24, 168]  # Daily and weekly patterns
+  
+  # LLM-specific detectors
+  llm:
+    token_usage:
+      enabled: true
+      token_spike_threshold: 3.0
+      max_tokens_threshold: 100000  # Maximum tokens per request
+      inefficient_ratio_threshold: 10.0  # Input/output ratio threshold
+    
+    latency:
+      enabled: true
+      latency_threshold_ms: 30000  # 30 seconds
+      spike_threshold: 3.0
+    
+    cost:
+      enabled: true
+      cost_threshold_usd: 1.0  # Cost per request threshold
+      spike_threshold: 3.0
+      daily_budget_usd: 100.0  # Daily budget limit
+    
+    quality:
+      enabled: true
+      quality_threshold: 0.7
+      coherence_threshold: 0.7
+      relevance_threshold: 0.7
+    
+    rate_limit:
+      enabled: true
+      warning_threshold: 0.8  # Warn at 80% of limit
+    
+    context_overflow:
+      enabled: true
+      warning_threshold: 0.85  # Warn at 85% usage
+      critical_threshold: 0.95  # Critical at 95% usage
 
 # Alert configuration
 alerts:

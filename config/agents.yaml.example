@@ -1,0 +1,25 @@
+# Example agent configurations
+# Copy this file to agents.yaml and customize for your agents
+
+agents:
+  - agent_id: agent_1
+    metrics_endpoint: http://agent1:9090/metrics
+    metadata:
+      name: "Processing Agent 1"
+      environment: "production"
+      region: "us-east-1"
+  
+  - agent_id: agent_2
+    metrics_endpoint: http://agent2:9090/metrics
+    metadata:
+      name: "Processing Agent 2"
+      environment: "production"
+      region: "us-west-2"
+  
+  - agent_id: agent_3
+    metrics_endpoint: http://agent3:9090/metrics
+    metadata:
+      name: "API Agent"
+      environment: "staging"
+      region: "eu-west-1"
+

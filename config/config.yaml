@@ -1,0 +1,51 @@
+# Configuration for Anomaly Detection System
+
+# Collection interval (seconds)
+collection_interval_seconds: 10
+
+# Deduplication window (minutes)
+deduplication_window_minutes: 5
+
+# Detectors configuration
+detectors:
+  statistical:
+    enabled: true
+    z_score_threshold: 3.0
+    iqr_multiplier: 1.5
+    window_size: 100
+    min_samples: 10
+  
+  ml:
+    enabled: false
+    method: isolation_forest  # or "one_class_svm"
+    contamination: 0.1
+    n_estimators: 100
+    online_learning: false
+    min_samples: 50
+  
+  rule_based:
+    enabled: true
+  
+  timeseries:
+    enabled: false
+    window_size: 100
+    min_samples: 30
+    use_prophet: false
+    trend_threshold: 2.0
+    seasonal_periods: [24, 168]  # Daily and weekly patterns
+
+# Alert configuration
+alerts:
+  default_min_severity: 0.5
+  cooldown_minutes: 5
+  channels:
+    - console
+    # - slack
+    # - email
+    # - telegram
+
+# Metrics storage
+metrics:
+  max_storage_size: 10000  # Max metrics per agent
+  retention_days: 30
+

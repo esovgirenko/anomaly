@@ -1,0 +1,91 @@
+# Rule-based detection rules
+
+rules:
+  # High CPU usage
+  - name: high_cpu_usage
+    description: CPU usage exceeds 90%
+    anomaly_type: performance
+    severity: 0.8
+    logic: AND
+    conditions:
+      - metric: cpu_usage
+        operator: ">"
+        value: 90.0
+        description: CPU usage above 90%
+
+  # High memory usage
+  - name: high_memory_usage
+    description: Memory usage exceeds 85%
+    anomaly_type: performance
+    severity: 0.7
+    logic: AND
+    conditions:
+      - metric: memory_usage
+        operator: ">="
+        value: 85.0
+        description: Memory usage above 85%
+
+  # Very high response time
+  - name: high_response_time
+    description: Response time exceeds threshold
+    anomaly_type: performance
+    severity: 0.8
+    logic: AND
+    conditions:
+      - metric: response_time_ms
+        operator: ">"
+        value: 1000.0
+        description: Response time above 1 second
+
+  # Error rate spike
+  - name: high_error_rate
+    description: Error rate exceeds 5%
+    anomaly_type: communication
+    severity: 0.9
+    logic: AND
+    conditions:
+      - metric: error_rate
+        operator: ">"
+        value: 0.05
+        description: Error rate above 5%
+
+  # Multiple conditions: High CPU AND High Memory
+  - name: resource_exhaustion
+    description: Both CPU and memory usage are high
+    anomaly_type: performance
+    severity: 0.9
+    logic: AND
+    conditions:
+      - metric: cpu_usage
+        operator: ">"
+        value: 80.0
+      - metric: memory_usage
+        operator: ">"
+        value: 80.0
+
+  # Time-windowed rule: High error rate sustained
+  - name: sustained_high_errors
+    description: High error rate sustained over 5 minutes
+    anomaly_type: communication
+    severity: 0.85
+    logic: AND
+    time_window_seconds: 300  # 5 minutes
+    min_occurrences: 3
+    conditions:
+      - metric: error_rate
+        operator: ">"
+        value: 0.03
+        description: Error rate above 3%
+
+  # Throughput drop
+  - name: low_throughput
+    description: Throughput below normal
+    anomaly_type: performance
+    severity: 0.6
+    logic: AND
+    conditions:
+      - metric: requests_per_second
+        operator: "<"
+        value: 10.0
+        description: Less than 10 requests per second
+

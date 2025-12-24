@@ -95,7 +95,7 @@ cp config/agents.yaml.example config/agents.yaml
 ### Базовое использование для LLM-агентов
 
 ```python
-from anomaly_detection import AnomalyDetectionSystem, LLMAgent
+from anomaly_detection import AnomalyDetectionSystem
 
 # Создание системы с LLM-конфигурацией
 system = AnomalyDetectionSystem(config='config/config.yaml')
@@ -119,6 +119,25 @@ await system.start_monitoring()
 anomalies = system.get_recent_anomalies(hours=24)
 for anomaly in anomalies:
     print(f"Anomaly: {anomaly.description}, Severity: {anomaly.severity}")
+```
+
+### Использование класса LLMAgent (опционально)
+
+```python
+from anomaly_detection import AnomalyDetectionSystem, LLMAgent
+
+# Создание LLM-агента с типизацией
+llm_agent = LLMAgent(
+    agent_id='claude_assistant',
+    model='claude-3-opus',
+    provider='anthropic',
+    context_window_size=200000,
+    rate_limit=50,
+    metadata={'environment': 'production'}
+)
+
+system = AnomalyDetectionSystem(config='config/config.yaml')
+system.register_agent(llm_agent.agent_id, metadata=llm_agent.metadata)
 ```
 
 ### Пример метрик LLM-агента

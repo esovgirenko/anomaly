@@ -294,6 +294,7 @@ token_usage:
 
 ## Дополнительные ресурсы
 
+- [Архитектура системы](ARCHITECTURE.md) - Подробное описание архитектуры
 - [Основная документация](README.md)
 - [Примеры использования](examples/llm_agent_example.py)
 - [Симулятор для тестирования](examples/llm_agent_simulator.py)
